@@ -1,1 +1,119 @@
-<p>cart works!</p>
+<section class="mx-auto max-w-7xl px-6 pb-24 pt-12 lg:px-10 lg:pt-16">
+  <div class="flex items-end justify-between gap-4 border-b hairline pb-6">
+    <h1 class="font-display text-4xl font-light leading-tight sm:text-5xl">
+      {{ 'cart.title' | t }}
+    </h1>
+    @if (cart.lines().length > 0) {
+      <span class="eyebrow">
+        <span class="font-numeric">{{ cart.count() }}</span> {{ 'cart.itemCount' | t }}
+      </span>
+    }
+  </div>
+
+  @if (success()) {
+    <div class="mt-16 flex flex-col items-center gap-5 border hairline px-8 py-20 text-center">
+      <p class="eyebrow">✓</p>
+      <p class="font-display max-w-lg text-3xl font-light leading-tight">
+        {{ 'cart.success' | t }}
+      </p>
+      <a routerLink="/" class="btn-ghost mt-2">{{ 'cart.emptyCta' | t }} →</a>
+    </div>
+  } @else if (cart.lines().length === 0) {
+    <div class="mt-16 flex flex-col items-center gap-5 border hairline px-8 py-24 text-center">
+      <p class="eyebrow">∅</p>
+      <p class="font-display text-3xl font-light">{{ 'cart.empty' | t }}</p>
+      <a routerLink="/" class="btn-primary mt-2">{{ 'cart.emptyCta' | t }} →</a>
+    </div>
+  } @else {
+    <div class="mt-10 grid gap-10 lg:grid-cols-[1.6fr_1fr]">
+      <ul class="divide-y hairline border-y hairline">
+        @for (line of cart.lines(); track line.product.id) {
+          <li class="grid grid-cols-[80px_1fr_auto] gap-5 py-6 sm:grid-cols-[120px_1fr_auto_auto] sm:gap-8">
+            <div class="aspect-square w-20 overflow-hidden bg-[color:var(--color-paper-soft)] sm:w-[120px]">
+              @if (!isImageFailed(line.product.id)) {
+                <img
+                  [src]="imageFor(line.product)"
+                  [alt]="line.product.name"
+                  loading="lazy"
+                  (error)="onImageError(line.product.id)"
+                  class="h-full w-full object-cover"
+                />
+              } @else {
+                <div class="flex h-full w-full items-center justify-center">
+                  <span class="font-display text-3xl font-light text-[color:var(--color-ink-muted)]/40">
+                    {{ line.product.name.charAt(0) }}
+                  </span>
+                </div>
+              }
+            </div>
+
+            <div class="min-w-0">
+              <p class="eyebrow truncate">{{ line.product.category?.name || '—' }}</p>
+              <a
+                [routerLink]="['/products', line.product.id]"
+                class="font-display mt-2 block truncate text-xl font-light hover:underline"
+              >
+                {{ line.product.name }}
+              </a>
+              <p class="font-numeric mt-2 text-[13px] text-[color:var(--color-ink-muted)]">
+                €{{ line.product.price.toFixed(2) }} / tk
+              </p>
+              <button
+                type="button"
+                (click)="remove(line.product.id)"
+                class="eyebrow mt-3 inline-flex items-center underline-offset-4 hover:text-[color:var(--color-ink)] hover:underline"
+              >
+                × {{ 'cart.remove' | t }}
+              </button>
+            </div>
+
+            <div class="self-center">
+              <app-quantity-stepper
+                [value]="line.quantity"
+                [min]="1"
+                [max]="line.product.stock"
+                (valueChange)="onQuantity(line.product.id, $event)"
+              />
+            </div>
+
+            <div class="font-numeric self-center text-right text-[15px] font-medium sm:min-w-[100px]">
+              €{{ (line.quantity * line.product.price).toFixed(2) }}
+            </div>
+          </li>
+        }
+      </ul>
+
+      <aside class="lg:sticky lg:top-28 lg:self-start">
+        <div class="border hairline p-8">
+          <p class="eyebrow">{{ 'cart.subtotal' | t }}</p>
+          <p class="font-numeric mt-3 text-[28px] font-medium tracking-tight">
+            €{{ cart.total().toFixed(2) }}
+          </p>
+          <div class="mt-6 border-t hairline pt-6">
+            <div class="flex items-baseline justify-between">
+              <span class="eyebrow">{{ 'cart.total' | t }}</span>
+              <span class="font-numeric text-[20px] font-medium">€{{ cart.total().toFixed(2) }}</span>
+            </div>
+          </div>
+          <button
+            type="button"
+            class="btn-primary mt-8 w-full"
+            (click)="checkout()"
+            [disabled]="submitting()"
+          >
+            @if (submitting()) {
+              {{ 'common.loading' | t }}
+            } @else {
+              {{ 'cart.checkout' | t }} →
+            }
+          </button>
+          @if (error()) {
+            <p class="mt-4 text-[12px] text-[color:var(--color-moss)]">
+              {{ 'cart.error' | t }}
+            </p>
+          }
+        </div>
+      </aside>
+    </div>
+  }
+</section>

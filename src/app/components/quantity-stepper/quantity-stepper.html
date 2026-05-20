@@ -1,0 +1,23 @@
+<div class="inline-flex items-center border hairline">
+  <button
+    type="button"
+    (click)="dec()"
+    [disabled]="value() <= min()"
+    class="font-numeric h-9 w-9 text-[15px] transition hover:bg-[color:var(--color-paper-soft)] disabled:opacity-30"
+    aria-label="−"
+  >
+    −
+  </button>
+  <span class="font-numeric h-9 min-w-[44px] border-x hairline px-3 leading-9 text-center text-[13px]">
+    {{ value() }}
+  </span>
+  <button
+    type="button"
+    (click)="inc()"
+    [disabled]="value() >= max()"
+    class="font-numeric h-9 w-9 text-[15px] transition hover:bg-[color:var(--color-paper-soft)] disabled:opacity-30"
+    aria-label="+"
+  >
+    +
+  </button>
+</div>

@@ -1,0 +1,70 @@
+<header class="sticky top-0 z-30 border-b hairline backdrop-blur-md bg-[color:var(--color-paper)]/85">
+  <div class="mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-5 lg:px-10">
+    <a routerLink="/" class="group flex items-baseline gap-3">
+      <span class="font-display text-[28px] font-light leading-none">{{ 'brand.name' | t }}</span>
+      <span class="hidden eyebrow sm:inline">— EE</span>
+    </a>
+
+    <nav class="hidden items-center gap-10 md:flex">
+      <a
+        routerLink="/"
+        routerLinkActive="text-[color:var(--color-ink)]"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="text-[13px] tracking-wide text-[color:var(--color-ink-muted)] transition hover:text-[color:var(--color-ink)]"
+      >
+        {{ 'nav.home' | t }}
+      </a>
+    </nav>
+
+    <div class="flex items-center gap-5">
+      <div class="hidden items-center border hairline text-[11px] uppercase tracking-[0.18em] sm:flex">
+        <button
+          type="button"
+          (click)="setLocale('et')"
+          [class]="localeBtnClass('et')"
+          [attr.aria-pressed]="i18n.locale() === 'et'"
+        >
+          ET
+        </button>
+        <span class="h-4 w-px bg-[color:var(--color-rule)]"></span>
+        <button
+          type="button"
+          (click)="setLocale('en')"
+          [class]="localeBtnClass('en')"
+          [attr.aria-pressed]="i18n.locale() === 'en'"
+        >
+          EN
+        </button>
+      </div>
+
+      <a
+        routerLink="/cart"
+        class="group relative flex items-center gap-2 text-[13px] tracking-wide text-[color:var(--color-ink)]"
+        [attr.aria-label]="'nav.cart' | t"
+      >
+        <span class="hidden sm:inline">{{ 'nav.cart' | t }}</span>
+        <span class="relative inline-flex items-center justify-center">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.4"
+            class="h-5 w-5"
+            aria-hidden="true"
+          >
+            <path d="M4 6h2l1.8 11.2A2 2 0 0 0 9.78 19h7.7a2 2 0 0 0 1.97-1.7L21 9H7" />
+            <circle cx="10" cy="22" r="1.1" fill="currentColor" />
+            <circle cx="18" cy="22" r="1.1" fill="currentColor" />
+          </svg>
+          @if (cart.count() > 0) {
+            <span
+              class="font-numeric absolute -right-3 -top-2 inline-flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-[color:var(--color-moss)] px-1 text-[10px] font-medium leading-none text-[color:var(--color-paper)]"
+            >
+              {{ cart.count() }}
+            </span>
+          }
+        </span>
+      </a>
+    </div>
+  </div>
+</header>
