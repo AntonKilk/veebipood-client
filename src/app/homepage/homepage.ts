@@ -76,7 +76,7 @@ export class Homepage implements OnInit {
     this.loading.set(true);
     this.error.set(null);
     this.products
-      .getProducts(this.page(), PAGE_SIZE, this.selectedCategoryId())
+      .getProducts(this.page(), PAGE_SIZE, "stock,asc", this.selectedCategoryId())
       .subscribe({
         next: (resp: Page<Product>) => {
           this.items.set(resp.content ?? []);

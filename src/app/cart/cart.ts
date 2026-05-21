@@ -1,6 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CartService } from '../services/cart.service';
+import { ProductSocketService } from '../services/product-socket.service';
 import { Product } from '../models/product.model';
 import { productImageUrl } from '../utils/product-image';
 import { QuantityStepper } from '../components/quantity-stepper/quantity-stepper';
@@ -15,6 +16,7 @@ import { TPipe } from '../i18n/t.pipe';
 })
 export class Cart {
   cart = inject(CartService);
+  private productSocket = inject(ProductSocketService);
 
   readonly submitting = signal(false);
   readonly success = signal(false);
@@ -52,6 +54,7 @@ export class Cart {
     this.cart.checkout().subscribe({
       next: () => {
         this.cart.clear();
+        this.productSocket.requestUpdate();
         this.success.set(true);
         this.submitting.set(false);
       },

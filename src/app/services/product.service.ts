@@ -9,8 +9,8 @@ export class ProductService {
   private http = inject(HttpClient);
   private base = `${environment.apiUrl}/products`;
 
-  getProducts(page = 0, size = 12, categoryId?: number | null): Observable<Page<Product>> {
-    let params = new HttpParams().set('page', page).set('size', size);
+  getProducts(page = 0, size = 12, sort = "stock,asc", categoryId?: number | null): Observable<Page<Product>> {
+    let params = new HttpParams().set('page', page).set('size', size).set('sort', sort);
     if (categoryId != null) {
       params = params.set('categoryId', categoryId);
     }
