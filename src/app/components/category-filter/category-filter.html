@@ -1,0 +1,21 @@
+<div class="flex items-center justify-between gap-6 border-y hairline py-5">
+  <span class="eyebrow hidden md:inline">{{ 'filter.label' | t }}</span>
+  <div class="-mx-1 flex flex-1 flex-wrap items-center gap-2 md:justify-end">
+    <button
+      type="button"
+      [class]="pillClass(selected() === null)"
+      (click)="pick(null)"
+    >
+      {{ 'filter.all' | t }}
+    </button>
+    @for (cat of categories(); track cat.id) {
+      <button
+        type="button"
+        [class]="pillClass(selected() === cat.id)"
+        (click)="pick(cat.id)"
+      >
+        {{ cat.name }}
+      </button>
+    }
+  </div>
+</div>

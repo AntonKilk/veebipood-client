@@ -1,1 +1,29 @@
-<p>not-found works!</p>
+<section class="relative mx-auto flex max-w-7xl flex-col items-center justify-center px-6 py-32 text-center lg:px-10 lg:py-44">
+  <p class="eyebrow animate-rise">{{ 'notFound.eyebrow' | t }}</p>
+
+  <div class="relative mt-8 animate-rise" style="animation-delay: 100ms">
+    <p
+      class="font-display select-none text-[26vw] font-light leading-[0.85] tracking-[-0.04em] sm:text-[180px] lg:text-[240px]"
+      style="font-variation-settings: 'SOFT' 100, 'WONK' 1;"
+    >
+      404
+    </p>
+    <span
+      aria-hidden="true"
+      class="font-display pointer-events-none absolute inset-0 select-none text-[26vw] font-light leading-[0.85] tracking-[-0.04em] text-[color:var(--color-moss)] mix-blend-multiply sm:text-[180px] lg:text-[240px]"
+      style="transform: translate(6px, 6px); opacity: 0.18;"
+    >
+      404
+    </span>
+  </div>
+
+  <h1 class="font-display mt-10 animate-rise text-3xl font-light sm:text-4xl" style="animation-delay: 200ms">
+    {{ 'notFound.title' | t }}
+  </h1>
+  <p class="mt-4 max-w-md text-[14px] leading-relaxed text-[color:var(--color-ink-muted)] animate-rise" style="animation-delay: 280ms">
+    {{ 'notFound.body' | t }}
+  </p>
+  <a routerLink="/" class="btn-primary mt-10 animate-rise" style="animation-delay: 360ms">
+    ← {{ 'notFound.cta' | t }}
+  </a>
+</section>
