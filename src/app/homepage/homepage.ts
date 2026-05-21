@@ -1,6 +1,8 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, DestroyRef, OnInit, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CategoryService } from '../services/category.service';
 import { ProductService } from '../services/product.service';
+import { ProductSocketService } from '../services/product-socket.service';
 import { Category, Page, Product } from '../models/product.model';
 import { ProductCard } from '../components/product-card/product-card';
 import { CategoryFilter } from '../components/category-filter/category-filter';
@@ -18,6 +20,8 @@ const PAGE_SIZE = 12;
 export class Homepage implements OnInit {
   private products = inject(ProductService);
   private categoryService = inject(CategoryService);
+  private productSocket = inject(ProductSocketService);
+  private destroyRef = inject(DestroyRef);
 
   readonly items = signal<Product[]>([]);
   readonly categories = signal<Category[]>([]);
@@ -33,6 +37,15 @@ export class Homepage implements OnInit {
       error: () => this.categories.set([]),
     });
     this.load();
+
+    this.productSocket.connect();
+    this.productSocket.products$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((resp: Page<Product>) => {
+        if (this.selectedCategoryId() !== null) return;
+        this.items.set(resp.content ?? []);
+        this.totalPages.set(resp.totalPages ?? 0);
+      });
   }
 
   onCategoryChange(id: number | null): void {

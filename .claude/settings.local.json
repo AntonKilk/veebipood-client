@@ -4,7 +4,10 @@
       "WebFetch(domain:github.com)",
       "Bash(gh api *)",
       "WebFetch(domain:api.github.com)",
-      "WebFetch(domain:raw.githubusercontent.com)"
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "PowerShell(gh api *)",
+      "PowerShell(npm install *)",
+      "PowerShell(npx tsc --noEmit -p tsconfig.app.json)"
     ]
   }
 }
